@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.4'  // تأكد من استخدام أحدث نسخة
+        // أضف هنا أي إضافات أخرى إذا كنت تستخدم مكتبات إضافية
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -5,14 +16,18 @@ allprojects {
     }
 }
 
-rootProject.buildDir = "../build"
+rootProject.buildDir = "../build"  // تعيين مكان ملفات البناء
+
 subprojects {
+    // تعيين دليل البناء لكل مشروع فرعي
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
+    // تحديد اعتماديات المشاريع الفرعية
     project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    delete rootProject.buildDir  // تنظيف ملفات البناء عند تنفيذ هذا الأمر
 }
