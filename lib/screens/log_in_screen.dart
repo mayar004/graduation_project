@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'Home_page.dart';
 
 
 class LogInScreen extends StatelessWidget {
-  final TextEditingController emailController = TextEditingController();
-
-
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +60,7 @@ class LogInScreen extends StatelessWidget {
                   const SizedBox(height: 24),
 
                   TextField(
+                    controller: emailController,  // ربط TextEditingController
                     decoration: InputDecoration(
                       labelText: 'Email',
                       prefixIcon: Icon(Icons.email, color: Color(0xFF001B5E)),
@@ -69,6 +72,7 @@ class LogInScreen extends StatelessWidget {
 
                   const SizedBox(height: 16),
                   TextField(
+                    controller: passwordController, // ربط TextEditingController
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.lock, color: Color(0xFF001B5E)),
                       labelText: 'Password',
@@ -111,7 +115,26 @@ class LogInScreen extends StatelessWidget {
                       width: 140,
                       height: 45,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          try {
+                            final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                                email: emailController.text,  // استخدام .text للحصول على النص
+                                password: passwordController.text );  // استخدام .text للحصول على النص
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>Homepage()),
+                            );
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'user-not-found') {
+                              print('No user found for that email.');
+                            } else if (e.code == 'wrong-password') {
+                              print('Wrong password provided for that user.');
+                            }
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Homepage()),
+                          );
                           // إضافة وظيفة لزر تسجيل الدخول
                         },
                         style: ElevatedButton.styleFrom(
