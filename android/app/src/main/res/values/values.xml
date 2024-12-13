@@ -1,0 +1,19 @@
+<resources>
+    <!-- Default Web Client ID -->
+    <string name="default_web_client_id">
+        80799670739-lvfg0rl1sdgf32pm7fm6pr0t4uaosqrs.apps.googleusercontent.com
+    </string>
+
+    <!-- Google API Key -->
+    <string name="google_api_key">
+        AIzaSyBTXk4Gp8cdobKeCvb2fKa-yhxyea00wWk
+    </string>
+
+    <!-- Firebase Database URL (غير موجود في الملف، يترك فارغاً إذا غير مطلوب) -->
+    <string name="firebase_database_url">https://your-database-name.firebaseio.com</string>
+
+    <!-- Google Storage Bucket -->
+    <string name="google_storage_bucket">
+        graduation-project-8bdd1.appspot.com
+    </string>
+</resources>
