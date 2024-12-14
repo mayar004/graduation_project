@@ -27,8 +27,7 @@ class _HomepageState extends State<Homepage> {
         ),
         body: ListView(
           children: [
-            // Text("How Are You", style: )
-            Text("Welcome")
+            // Text("How Are You", style:
           ],
         ));
   }

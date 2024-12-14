@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'log_in_screen.dart';
 import 'sign_up_screen.dart';
@@ -32,6 +33,35 @@ class GetStarted extends StatelessWidget {
 
     return userCredential.user;
   }
+  Future<User?> signInWithFacebook() async {
+    try {
+      // بدء تسجيل الدخول عبر Facebook
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      if (loginResult.status == LoginStatus.success) {
+        // الحصول على Access Token
+        final accessToken = loginResult.accessToken?.tokenString;
+
+        if (accessToken != null) {
+          // إنشاء Credential باستخدام الـ AccessToken
+          final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(accessToken);
+
+          // تسجيل الدخول إلى Firebase
+          UserCredential userCredential = await FirebaseAuth.instance
+              .signInWithCredential(facebookAuthCredential);
+
+          return userCredential.user; // إرجاع المستخدم بعد نجاح العملية
+        }
+      } else {
+        print('Facebook login failed: ${loginResult.message}');
+      }
+    } catch (e) {
+      print('Error during Facebook login: $e');
+    }
+    return null; // إرجاع null في حالة حدوث خطأ
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +85,16 @@ class GetStarted extends StatelessWidget {
 
               // Continue with Facebook button
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () async{
+                  User? user = await signInWithFacebook();
+                  if (user != null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Homepage()),
+                    );
+                  } else {
+                    print('Facebook login failed or canceled.');
+                  }                },
                 icon: Icon(Icons.facebook, color: Colors.blue),
                 label: Text(
                   'Continue with Facebook',
