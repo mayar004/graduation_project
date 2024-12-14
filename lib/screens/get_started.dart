@@ -114,8 +114,10 @@ class GetStarted extends StatelessWidget {
                 onPressed: () async {
                   User? user = await signInWithGoogle();
                   if (user != null) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        'Homepage', (Route<dynamic> route) => false);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Homepage()),
+                    );
                   }
                 },
                 icon: Image.asset(
