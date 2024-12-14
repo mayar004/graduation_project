@@ -6,6 +6,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.4'  // تأكد من استخدام أحدث نسخة
         // أضف هنا أي إضافات أخرى إذا كنت تستخدم مكتبات إضافية
+        classpath 'com.google.gms:google-services:4.4.2' // استخدم أحدث إصدار
+
     }
 }
 

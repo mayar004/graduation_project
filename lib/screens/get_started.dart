@@ -1,9 +1,37 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'log_in_screen.dart';
 import 'sign_up_screen.dart';
+import 'Home_page.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
+  //google authentication
+  Future<User?> signInWithGoogle() async {
+    // Start the Google Sign-In process
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    if (googleUser == null) {
+      // User canceled the sign-in process
+      return null;
+    }
+
+    // Get Google authentication details
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    // Create a new credential for Firebase
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Sign in with the credential
+    UserCredential userCredential =
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    return userCredential.user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +72,13 @@ class GetStarted extends StatelessWidget {
 
               // Continue with Google button
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+                  User? user = await signInWithGoogle();
+                  if (user != null) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        'Homepage', (Route<dynamic> route) => false);
+                  }
+                },
                 icon: Image.asset(
                   'assets/images/gmail.png', // Replace with your Google icon path
                   height: 24,
