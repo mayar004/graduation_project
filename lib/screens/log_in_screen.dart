@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'Home_page.dart';
+import 'forget_password.dart';
 
 
 class LogInScreen extends StatelessWidget {
@@ -97,6 +98,11 @@ class LogInScreen extends StatelessWidget {
                       const Spacer(),
                       TextButton(
                         onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ForgetPassword()),
+                          );
+
                           // إضافة وظيفة لزر "نسيت كلمة المرور"
                         },
                         child: const Text(
